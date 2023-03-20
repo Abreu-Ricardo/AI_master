@@ -59,6 +59,8 @@ def DFS(no):
 	expansao(no)
 
 	tempo = 0
+	global n_mexe
+	n_mexe = 0
 
 	cont_dir = 0
 	cont_esq = 0
@@ -66,16 +68,19 @@ def DFS(no):
 
 		
 	if no.dir.cor  == "B":
+		print("DIR")
 		DFS_Visit(no.dir, cont_lin, tempo, cont_dir, cont_esq, cont_limp)
 		
 
 	if no.esq.cor  == "B":
+		print("ESQ")
 		DFS_Visit(no.esq, cont_lin, tempo, cont_dir, cont_esq, cont_limp)
-		
+
 		
 	if no.limp.cor == "B":
+		print("LIMP")
 		DFS_Visit(no.limp, cont_lin, tempo, cont_dir, cont_esq, cont_limp)
-		
+
 
 
 def DFS_Visit(noh, cont_lin, tempo, cont_dir, cont_esq, cont_limp):
@@ -89,6 +94,8 @@ def DFS_Visit(noh, cont_lin, tempo, cont_dir, cont_esq, cont_limp):
 	noh.cor = "C"
 
 	if noh.s1 == 0 and noh.s2 == 0:
+		global n_mexe
+		n_mexe = 1
 		return
 	
 	else:
@@ -96,9 +103,11 @@ def DFS_Visit(noh, cont_lin, tempo, cont_dir, cont_esq, cont_limp):
 			noh.dir.pai  = noh
 			#expansao(noh.dir)
 
-			if cont_dir < 5:
+			if cont_dir < 5 and (noh.s1 != 0 or noh.s2 != 0):
 				cont_dir = cont_dir + 1
-				DFS_Visit(noh.dir, cont_lin, tempo, cont_dir, cont_esq, cont_limp)
+
+				if n_mexe == 0:
+					DFS_Visit(noh.dir, cont_lin, tempo, cont_dir, cont_esq, cont_limp)
 			else:
 				cont_dir = 0
 				return
@@ -107,9 +116,11 @@ def DFS_Visit(noh, cont_lin, tempo, cont_dir, cont_esq, cont_limp):
 			noh.esq.pai  = noh
 			#expansao(noh.esq)
 
-			if cont_esq < 5:
+			if cont_esq < 5 and (noh.s1 != 0 or noh.s2 != 0):
 				cont_esq = cont_esq + 1
-				DFS_Visit(noh.esq, cont_lin, tempo, cont_dir, cont_esq, cont_limp)
+				
+				if n_mexe == 0:
+					DFS_Visit(noh.esq, cont_lin, tempo, cont_dir, cont_esq, cont_limp)
 			else:
 				cont_esq = 0
 				return
@@ -118,9 +129,11 @@ def DFS_Visit(noh, cont_lin, tempo, cont_dir, cont_esq, cont_limp):
 			noh.limp.pai  = noh
 			#expansao(noh.limp)
 
-			if cont_limp < 5:
+			if cont_limp < 5 and (noh.s1 != 0 or noh.s2 != 0):
 				cont_limp = cont_limp + 1
-				DFS_Visit(noh.limp, cont_lin, tempo, cont_dir, cont_esq, cont_limp)
+	
+				if n_mexe == 0:
+					DFS_Visit(noh.limp, cont_lin, tempo, cont_dir, cont_esq, cont_limp)
 			else:
 				cont_limp = 0
 				return
