@@ -13,28 +13,22 @@ def busca_larg(n):
 	n.dist = 0  # No raiz recebe dist 0
 	fila.append(n)
 
-	while len(fila) != 0:
-		#print(fila)
+	achou = 0 # flag para estado objetivo alcan
+
+	cont_lin = 1
+	while len(fila) != 0 and achou != 1: # len(fila) != 0 or
 		no_atual = fila.pop(0) # Retirar o primeiro elemento da fila
 
-		print(f"{no_atual.posiRobo, no_atual.s1, no_atual.s2}")
+		print(f"{cont_lin}: {no_atual.posiRobo, no_atual.s1, no_atual.s2}")
+		cont_lin = cont_lin + 1
 		
-		# PROBLEMA: Como andar na arvore?
-
-		# pprint(vars(no_atual))
-		# print("\n")
-
-
-
 		if no_atual.dir.cor  == "B":
 			no_atual.dir.cor  = "C"
 			no_atual.dir.dist = no_atual.dist + 1
 			no_atual.dir.pai  = no_atual
 			
 			expansao(no_atual.dir)
-			#pprint(vars(no_atual.dir))
 			fila.append(no_atual.dir)
-			
 
 		if no_atual.esq.cor  == "B":
 			no_atual.esq.cor  = "C"
@@ -54,7 +48,85 @@ def busca_larg(n):
 		
 		no_atual.cor = "P" # Os vizinhos ja foram visitados
 
-		#if : # Condicional para decidir para onde ir
+		if no_atual.s1 == 0 and no_atual.s2 == 0: # Condicional para decidir para onde ir
+			achou = 1
+#***************************************************************************************#
+
+
+
+def DFS(no):
+	cont_lin = 1
+	expansao(no)
+
+	tempo = 0
+
+	cont_dir = 0
+	cont_esq = 0
+	cont_limp = 0
+
+		
+	if no.dir.cor  == "B":
+		DFS_Visit(no.dir, cont_lin, tempo, cont_dir, cont_esq, cont_limp)
+		
+
+	if no.esq.cor  == "B":
+		DFS_Visit(no.esq, cont_lin, tempo, cont_dir, cont_esq, cont_limp)
+		
+		
+	if no.limp.cor == "B":
+		DFS_Visit(no.limp, cont_lin, tempo, cont_dir, cont_esq, cont_limp)
+		
+
+
+def DFS_Visit(noh, cont_lin, tempo, cont_dir, cont_esq, cont_limp):
+	print(f"{cont_lin}: {noh.posiRobo, noh.s1, noh.s2}")
+
+	cont_lin = cont_lin + 1
+	expansao(noh)
+
+	tempo = tempo + 1
+	noh.dist = tempo
+	noh.cor = "C"
+
+	if noh.s1 == 0 and noh.s2 == 0:
+		return
+	
+	else:
+		if noh.dir.cor  == "B":
+			noh.dir.pai  = noh
+			#expansao(noh.dir)
+
+			if cont_dir < 5:
+				cont_dir = cont_dir + 1
+				DFS_Visit(noh.dir, cont_lin, tempo, cont_dir, cont_esq, cont_limp)
+			else:
+				cont_dir = 0
+				return
+
+		if noh.esq.cor  == "B":
+			noh.esq.pai  = noh
+			#expansao(noh.esq)
+
+			if cont_esq < 5:
+				cont_esq = cont_esq + 1
+				DFS_Visit(noh.esq, cont_lin, tempo, cont_dir, cont_esq, cont_limp)
+			else:
+				cont_esq = 0
+				return
+
+		if noh.limp.cor == "B":
+			noh.limp.pai  = noh
+			#expansao(noh.limp)
+
+			if cont_limp < 5:
+				cont_limp = cont_limp + 1
+				DFS_Visit(noh.limp, cont_lin, tempo, cont_dir, cont_esq, cont_limp)
+			else:
+				cont_limp = 0
+				return
+
+		noh.cor = "P"
+		tempo = tempo + 1
 
 
 #***************************************************************************************#
@@ -113,6 +185,9 @@ robo = No(1, 1, 1)
 
 print(f"Estado inicial-> {robo.posiRobo} {robo.s1} {robo.s2}\n")
 
-robo = busca_larg(robo)
+#robo = busca_larg(robo)
+
+robo = DFS(robo)
+
 
 # print(f"\nEstado final-> {robo.posiRobo} {robo.s1} {robo.s2}")
