@@ -1,8 +1,12 @@
-# Aluno: Ricardo
-# Implementação da busca em largura para o exemplo
-# do robô aspirador
+# Aluno: Ricardo Abreu de Oliveira
+# Objetivo: Implementação da busca em largura para o exemplo do robô aspirador
+# Conclusões: A busca em largura para este problema é uma solução mais viável do que a busca em profundidade, uma vez que, para a busca em 
+# profundidade completar a sua execução foi preciso colocar um limitante(de número 5) de profundiade, pois caso contrário, obeteríamos erro de estouro de 
+# memória causado pela recursão infinita onde o robo mantém-se no mesmo estado para sempre. Em contra partida a abordagem em largura para este
+# problema soluciona de forma mais eficiente já que temos poucos estados para caminhar.
 
-from pprint import pprint
+
+
 
 fila = []
 
@@ -66,27 +70,26 @@ def DFS(no):
 	cont_esq = 0
 	cont_limp = 0
 
-		
+	# 3 primeiros caminhos (vai para dir, esq ou limpa)
 	if no.dir.cor  == "B":
 		print("DIR")
-		DFS_Visit(no.dir, cont_lin, tempo, cont_dir, cont_esq, cont_limp)
+		DFS_Visit(no.dir,  tempo, cont_dir, cont_esq, cont_limp)
 		
 
 	if no.esq.cor  == "B":
 		print("ESQ")
-		DFS_Visit(no.esq, cont_lin, tempo, cont_dir, cont_esq, cont_limp)
+		DFS_Visit(no.esq,  tempo, cont_dir, cont_esq, cont_limp)
 
 		
 	if no.limp.cor == "B":
 		print("LIMP")
-		DFS_Visit(no.limp, cont_lin, tempo, cont_dir, cont_esq, cont_limp)
+		DFS_Visit(no.limp,  tempo, cont_dir, cont_esq, cont_limp)
 
 
 
-def DFS_Visit(noh, cont_lin, tempo, cont_dir, cont_esq, cont_limp):
-	print(f"{cont_lin}: {noh.posiRobo, noh.s1, noh.s2}")
+def DFS_Visit(noh,  tempo, cont_dir, cont_esq, cont_limp):
+	print(f"{noh.posiRobo, noh.s1, noh.s2}")
 
-	cont_lin = cont_lin + 1
 	expansao(noh)
 
 	tempo = tempo + 1
@@ -101,39 +104,36 @@ def DFS_Visit(noh, cont_lin, tempo, cont_dir, cont_esq, cont_limp):
 	else:
 		if noh.dir.cor  == "B":
 			noh.dir.pai  = noh
-			#expansao(noh.dir)
 
 			if cont_dir < 5 and (noh.s1 != 0 or noh.s2 != 0):
 				cont_dir = cont_dir + 1
-
 				if n_mexe == 0:
-					DFS_Visit(noh.dir, cont_lin, tempo, cont_dir, cont_esq, cont_limp)
+					DFS_Visit(noh.dir,  tempo, cont_dir, cont_esq, cont_limp)
+
 			else:
 				cont_dir = 0
 				return
 
 		if noh.esq.cor  == "B":
 			noh.esq.pai  = noh
-			#expansao(noh.esq)
 
 			if cont_esq < 5 and (noh.s1 != 0 or noh.s2 != 0):
 				cont_esq = cont_esq + 1
-				
 				if n_mexe == 0:
-					DFS_Visit(noh.esq, cont_lin, tempo, cont_dir, cont_esq, cont_limp)
+					DFS_Visit(noh.esq, tempo, cont_dir, cont_esq, cont_limp)
+
 			else:
 				cont_esq = 0
 				return
 
 		if noh.limp.cor == "B":
 			noh.limp.pai  = noh
-			#expansao(noh.limp)
 
 			if cont_limp < 5 and (noh.s1 != 0 or noh.s2 != 0):
 				cont_limp = cont_limp + 1
-	
 				if n_mexe == 0:
-					DFS_Visit(noh.limp, cont_lin, tempo, cont_dir, cont_esq, cont_limp)
+					DFS_Visit(noh.limp,  tempo, cont_dir, cont_esq, cont_limp)
+
 			else:
 				cont_limp = 0
 				return
@@ -193,14 +193,20 @@ def expansao(n):
 
 
 
-# Estado inicial do robô: Posição na sala 1 e as duas salas sujas
-robo = No(1, 1, 1)
+if __name__ == "__main__":
 
-print(f"Estado inicial-> {robo.posiRobo} {robo.s1} {robo.s2}\n")
+	# Estado inicial do robô: Posição na sala 1 e as duas salas sujas
+	robo = No(1, 1, 1)
 
-#robo = busca_larg(robo)
+	print(f"Estado inicial-> {robo.posiRobo} {robo.s1} {robo.s2}\n")
 
-robo = DFS(robo)
+	print("Busca em largura")
+	busca_larg(robo)
+
+	print("\n############################################\n")
+
+	print("Busca em profundidade iterativa")
+	DFS(robo)
 
 
-# print(f"\nEstado final-> {robo.posiRobo} {robo.s1} {robo.s2}")
+	# print(f"\nEstado final-> {robo.posiRobo} {robo.s1} {robo.s2}")
