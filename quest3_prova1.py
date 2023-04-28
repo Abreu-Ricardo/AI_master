@@ -204,7 +204,7 @@ def DFS_Visit(noh,  tempo, cont_dir, cont_esq, cont_cima, cont_baixo):
 		if noh.cima.visitado == "B":
 			noh.cima.pai  = noh
 
-			if cont_cima < 5 :#and (noh.s1 != 0 or noh.s2 != 0):
+			if cont_cima < 5 :
 				cont_cima = cont_cima + 1
 				if n_mexe == 0:
 					DFS_Visit(noh.cima,  tempo, cont_dir, cont_esq, cont_cima, cont_baixo)
@@ -216,7 +216,7 @@ def DFS_Visit(noh,  tempo, cont_dir, cont_esq, cont_cima, cont_baixo):
 		if noh.baixo.visitado == "B":
 			noh.baixo.pai  = noh
 
-			if cont_baixo < 5 :#and (noh.s1 != 0 or noh.s2 != 0):
+			if cont_baixo < 5 :
 				cont_baixo = cont_baixo + 1
 				if n_mexe == 0:
 					DFS_Visit(noh.baixo,  tempo, cont_dir, cont_esq, cont_cima, cont_baixo)
@@ -228,7 +228,7 @@ def DFS_Visit(noh,  tempo, cont_dir, cont_esq, cont_cima, cont_baixo):
 		if noh.esq.visitado  == "B":
 			noh.esq.pai  = noh
 
-			if cont_esq < 5 :#and (noh.s1 != 0 or noh.s2 != 0):
+			if cont_esq < 5 :
 				cont_esq = cont_esq + 1
 				if n_mexe == 0:
 					DFS_Visit(noh.esq,  tempo, cont_dir, cont_esq, cont_cima, cont_baixo)
@@ -240,7 +240,7 @@ def DFS_Visit(noh,  tempo, cont_dir, cont_esq, cont_cima, cont_baixo):
 		if noh.dir.visitado  == "B":
 			noh.dir.pai  = noh
 
-			if cont_dir < 5 :#and (noh.s1 != 0 or noh.s2 != 0):
+			if cont_dir < 5 :
 				cont_dir = cont_dir + 1
 				if n_mexe == 0:
 					DFS_Visit(noh.dir,  tempo, cont_dir, cont_esq, cont_cima, cont_baixo)
