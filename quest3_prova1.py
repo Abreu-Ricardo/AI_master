@@ -10,6 +10,9 @@ class Noh():
 		self.esq   = None
 		self.dir   = None
 
+		self.dist  = None
+		self.pai   = None
+
 		self.visitado = "B"
 	
 
@@ -89,6 +92,9 @@ def expansao(no):
 	no.dir   = anda_dir(no)
 
 
+############################################################
+############################################################
+############################################################
 # Busca em largura
 def busca_larg(no, lin_f, col_f):
 	achou = 0
@@ -146,6 +152,107 @@ def busca_larg(no, lin_f, col_f):
 			achou = 1
 
 
+############################################################
+############################################################
+############################################################
+
+def DFS(no):
+	cont_lin = 1
+	expansao(no)
+
+	tempo = 0
+	global n_mexe
+	n_mexe = 0
+
+	cont_dir = 0
+	cont_esq = 0
+	cont_cima = 0
+	cont_baixo = 0
+	
+
+	# 4 primeiros caminhos (vai para cima, baixo, esq e dir)
+	if no.cima.visitado  == "B":
+		DFS_Visit(no.cima,  tempo, cont_dir, cont_esq, cont_cima, cont_baixo)
+		
+	if no.baixo.visitado  == "B":
+		DFS_Visit(no.baixo,  tempo, cont_dir, cont_esq, cont_cima, cont_baixo)
+		
+	if no.esq.visitado == "B":
+		DFS_Visit(no.esq,  tempo, cont_dir, cont_esq, cont_cima, cont_baixo)
+	
+	if no.dir.visitado == "B":
+		DFS_Visit(no.dir,  tempo, cont_dir, cont_esq, cont_cima, cont_baixo)
+
+
+def DFS_Visit(noh,  tempo, cont_dir, cont_esq, cont_cima, cont_baixo):
+	print(f"{noh.posi[0], noh.posi[1]}")
+
+	expansao(noh)
+
+	tempo = tempo + 1
+	noh.dist = tempo
+	noh.cor = "C"
+
+	if noh.posi[0] == lin_f and noh.posi[1] == col_f:
+		global n_mexe
+		n_mexe = 1
+		print(f"--->{noh.posi[0], noh.posi[1]}<---")
+		return
+	
+	else:
+
+		if noh.cima.visitado == "B":
+			noh.cima.pai  = noh
+
+			if cont_cima < 5 :#and (noh.s1 != 0 or noh.s2 != 0):
+				cont_cima = cont_cima + 1
+				if n_mexe == 0:
+					DFS_Visit(noh.cima,  tempo, cont_dir, cont_esq, cont_cima, cont_baixo)
+
+			else:
+				cont_cima = 0
+				return
+		
+		if noh.baixo.visitado == "B":
+			noh.baixo.pai  = noh
+
+			if cont_baixo < 5 :#and (noh.s1 != 0 or noh.s2 != 0):
+				cont_baixo = cont_baixo + 1
+				if n_mexe == 0:
+					DFS_Visit(noh.baixo,  tempo, cont_dir, cont_esq, cont_cima, cont_baixo)
+
+			else:
+				cont_baixo = 0
+				return
+
+		if noh.esq.visitado  == "B":
+			noh.esq.pai  = noh
+
+			if cont_esq < 5 :#and (noh.s1 != 0 or noh.s2 != 0):
+				cont_esq = cont_esq + 1
+				if n_mexe == 0:
+					DFS_Visit(noh.esq,  tempo, cont_dir, cont_esq, cont_cima, cont_baixo)
+
+			else:
+				cont_esq = 0
+				return
+
+		if noh.dir.visitado  == "B":
+			noh.dir.pai  = noh
+
+			if cont_dir < 5 :#and (noh.s1 != 0 or noh.s2 != 0):
+				cont_dir = cont_dir + 1
+				if n_mexe == 0:
+					DFS_Visit(noh.dir,  tempo, cont_dir, cont_esq, cont_cima, cont_baixo)
+
+			else:
+				cont_dir = 0
+				return
+			
+		
+		noh.visitado = "P"
+		tempo = tempo + 1
+
 
 
 ##########################################################
@@ -157,8 +264,16 @@ if __name__ == "__main__":
 	lin_f = int(lin_f)
 	col_f = int(col_f) 
 
+	# lin_f = 2
+	# col_f = 2
+
 	
 	no = Noh(0, 0)
 	no.visitado = "C"
-	busca_larg(no, lin_f, col_f)
+
+	#busca_larg(no, lin_f, col_f)
+
+	no.visitado = "B"
+	DFS(no)
+
 	
